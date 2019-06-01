@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from 'firebase';
 import shortid from 'shortid';
 
 const putFiles = (files) => {
@@ -13,15 +13,17 @@ const putFiles = (files) => {
   );
 };
 
-const init = (config) => firebase.initializeApp(config);
+const init = (config) => {
+  firebase.initializeApp(config);
+};
 
 
-const auth = () => firebase.auth()
+const auth = () => firebase.auth();
 
 const referenceField = (model, _id) => {
   const db = firebase.firestore();
-  return db.doc(`${model}/${_id}`)
-}
+  return db.doc(`${model}/${_id}`);
+};
 
 const collection = (collectionName) => {
   const db = firebase.firestore();
@@ -30,9 +32,9 @@ const collection = (collectionName) => {
   const getAll = async () => {
     const data = [];
     const query = await firebaseCollection.get();
-    query.forEach(doc => {
-      const snapshot = doc.data()
-      snapshot._id = doc.id
+    query.forEach((doc) => {
+      const snapshot = doc.data();
+      snapshot._id = doc.id;
       data.push(snapshot);
     });
     return data;
@@ -42,9 +44,9 @@ const collection = (collectionName) => {
   const count = async (res) => {
     const r = await res.get();
     return r.docs.length;
-  }
+  };
 
-  const paginate = async (pageNumber, perPage, query, populate = "") => {
+  const paginate = async (pageNumber, perPage, query, populate = '') => {
     const data = [];
     const queryValue = [];
     let res = firebaseCollection;
@@ -57,17 +59,17 @@ const collection = (collectionName) => {
     if (queryValue.length > 0) {
       res = res
         .startAt(...queryValue)
-        .endAt(...queryValue)
+        .endAt(...queryValue);
     }
 
-    const total = await count(res)
+    const total = await count(res);
 
     res = await res
       .limit(perPage * pageNumber)
       .get();
 
     let i = 0;
-    res.forEach(doc => {
+    res.forEach((doc) => {
       if (i >= (pageNumber - 1) * perPage) {
         const snapshot = doc.data();
         snapshot._id = doc.id;
@@ -76,7 +78,7 @@ const collection = (collectionName) => {
       i += 1;
     });
     if (populate) {
-      populate.map(async populatePath => {
+      populate.map(async (populatePath) => {
         for (let i = 0; i < data.length; i++) {
           if (data[i][populatePath]) {
             const child = await data[i][populatePath].get()
@@ -96,11 +98,11 @@ const collection = (collectionName) => {
     return data
   }
 
-  const getOne = (_id, populate = "") => {
+  const getOne = (_id, populate = '') => {
     return new Promise(async (resolve, reject) => {
-      let data = await _get(_id);
+      const data = await _get(_id);
       if (populate) {
-        populate.map(async populatePath => {
+        populate.map(async (populatePath) => {
           if (data[populatePath]) {
             const child = await data[populatePath].get();
             data[populatePath] = child.data();
@@ -111,7 +113,7 @@ const collection = (collectionName) => {
       resolve(data);
 
     });
-  }
+  };
 
   const create = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -122,7 +124,7 @@ const collection = (collectionName) => {
         reject(error);
       }
     });
-  }
+  };
 
 
   const update = (_id, data) => {
@@ -130,21 +132,21 @@ const collection = (collectionName) => {
       try {
         await firebaseCollection.doc(_id).update(data);
         const res = await getOne(_id);
-        resolve(res)
+        resolve(res);
       } catch (error) {
-        reject(error)
+        reject(error);
       }
-    })
+    });
   };
 
 
   const destroy = (_id) => {
     return new Promise(async (resolve, reject) => {
       try {
-        await firebaseCollection.doc(_id).delete()
-        resolve({ success: 1 })
+        await firebaseCollection.doc(_id).delete();
+        resolve({ success: 1 });
       } catch (error) {
-        reject(error)
+        reject(error);
       }
     });
   }
@@ -171,10 +173,10 @@ const collection = (collectionName) => {
   };
 };
 
-export {
+export default {
   init,
   putFiles,
   collection,
   referenceField,
-  auth
+  auth,
 };
