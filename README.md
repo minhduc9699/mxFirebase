@@ -27,8 +27,8 @@ mxfirebase.init(config)
 
 ### Firebase auth
 ``` js
-
-mxfirebase.auth() 
+// same as firebase.auth()
+mxfirebase.auth()
 
 ```
 
@@ -47,7 +47,7 @@ const newBlog = {
 
 
 blogCollection.create(blog).then( r => 
-//... return created blog
+// return created blog
 )
 
 // get all blog
@@ -77,8 +77,31 @@ blogCollection.destroy(blogId).then(//... return success code)
 ### Firestore advance
 
 ``` js
-***TBD***
+// reference
 
+// create new blog which have field refer to author
+const authorCollection = mxfirebase.collection('authors')
+
+
+const blogCollection = mxfirebase.collection("blogs")
+
+// 
+
+const newBlog = {
+  title: "new blog",
+  author: mxfirebase.referenceField('authors', authorId) // authors is collection name
+}
+
+// get blog and populate author
+
+blogCollection.getOne(blogId, ['author']) // author is reference field in blog collection
+
+
+// pagination
+
+blogCollection.paginate(pageNumber, itemPerPage).then(
+  // return total items and paginated data
+)
 ```
 
 ## Developer guide
