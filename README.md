@@ -1,14 +1,14 @@
 # Mindx edu firebase
 ## User guide
 
-### install
+### Install
 
-```
+``` 
 npm install mx-firebase
 ```
 
-### init mx-firebase
-```
+### Init Firebase
+``` js
 
 import mxfirebase from 'mx-firebase';
 
@@ -25,36 +25,61 @@ mxfirebase.init(config)
 
 ```
 
-<!-- ### Producer
-```
-import { RbProducer } from 'tk-queue';
-// Initialize
-const rbUserProducer = RbProducer('user');
+### Firebase auth
+``` js
 
-// Send message when connection is ready
-rbUserProducer('upsert', <new user data>);
+mxfirebase.auth() 
+
 ```
 
-### Consumer
+### Firestore basic
+``` js
+// Create / access to collection
+const blogCollection = mxfirebase.collection("blogs")
+
+// create new blog
+
+const newBlog = {
+  title: "new blog",
+  description: "a blog",
+  //...
+}
+
+
+blogCollection.create(blog).then( r => 
+//... return created blog
+)
+
+// get all blog
+
+blogCollection.getAll().then(//...)
+
+// get one blog
+
+blogCollection.getOne(blogId).then(//...)
+
+// edit a blog
+
+editedBlog = {
+  title: "edited",
+  //...
+}
+
+blogCollection.update(blogId, editedBlog).then(//...)
+
+
+// delete a blog
+
+blogCollection.destroy(blogId).then(//... return success code)
+
 ```
-// Initialize
-import { RbConsumer } from 'tk-queue';
 
-const rbUserConsumer = new RbConsumer(
-  "tk-lm",
-  "user",
-  (data) => new Promise((resolve, reject) => {
-    // Upsert user here
-    resolve();
-  }),
-  (_id) => new Promise((resolve, reject) => {
-    // Delete user here
-    resolve();
-  })
+### Firestore advance
 
-// Listen when connection is ready
-rbUserConsumer.listen();
-``` -->
+``` js
+***TBD***
+
+```
 
 ## Developer guide
 ### Develop
