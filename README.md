@@ -46,7 +46,7 @@ const newBlog = {
 }
 
 
-blogCollection.create(blog).then( r => 
+blogCollection.create(newBlog).then( r => 
 // return created blog
 )
 
@@ -102,6 +102,30 @@ blogCollection.getOne(blogId, ['author']) // author is reference field in blog c
 blogCollection.paginate(pageNumber, itemPerPage).then(
   // return total items and paginated data
 )
+
+// paginate and filter
+
+blogCollection.paginate(pageNumber, itemPerPage, query).then(
+  // return total items and paginated data
+)
+
+// populate when get many
+
+blogCollection.paginate(pageNumber, itemPerPage, query, ['reference field you want to populate']).then(
+  // return total items and paginated data
+)
+
+```
+
+## Firebase storage
+
+``` js
+// upload multiple file to firebase storage 
+
+mxfirebase.putFiles(files).then(
+// return array of url
+)
+
 ```
 
 ## Developer guide
